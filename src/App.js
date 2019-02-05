@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
-import io from "socket.io-client";
-import './App.css';
+import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
 import Editor from './editor'
-import { SERVER_URL } from './config/config'
+import SessionPage from './session-page';
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: ''
-    }
-    this.handleChange = this.handleChange.bind(this)
-    this.socket = io(SERVER_URL)
-  }
-
-  handleChange(event) {
-    this.setState({ value: event.target.value })
-    this.socket.emit('SEND_MESSAGE', event.target.value)
-  }
-
   render() {
     return (
-      <div className="App">
-        <Editor />
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <h3>Live Coding Platform</h3>
+
+          <Switch>
+            <Route path='/' component={SessionPage} />
+            <Route path='/editor' component={Editor} />
+          </Switch>
+
+        </div>
+      </BrowserRouter>
     );
   }
 }
