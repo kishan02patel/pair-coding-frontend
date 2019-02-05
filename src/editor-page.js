@@ -9,6 +9,9 @@ class EditorPage extends Component {
 		this.handleChange = this.handleChange.bind(this)
 		console.log(props.location.state.url)
 		this.socket = io(`${SERVER_URL}/${props.location.state.url}`)
+		this.socket.on('RECEIVE_MESSAGE', (data) => {
+			console.log(data)
+		})
 	}
 
 	handleChange(data) {
