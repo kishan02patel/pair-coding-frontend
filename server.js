@@ -3,8 +3,17 @@ const socket = require('socket.io')
 const cors = require('cors')
 const app = express()
 const { PORT } = require('./src/config/config')
+const socketsArray = []
 
 app.use(cors())
+
+app.get('/getSessionURL', (req, res) => {
+	const url = Math.random().toString(36).substring(2);
+	console.log(url)
+	socketsArray.push(url)
+
+	res.send({ url })
+})
 
 server = app.listen(PORT, () => {
 	console.log('Server started on port:', PORT)
