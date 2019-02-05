@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from "socket.io-client";
 import './App.css';
+import { SERVER_URL } from './config/config'
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class App extends Component {
       value: ''
     }
     this.handleChange = this.handleChange.bind(this)
-    this.socket = io('localhost:3001')
+    this.socket = io(SERVER_URL)
   }
 
   handleChange(event) {
