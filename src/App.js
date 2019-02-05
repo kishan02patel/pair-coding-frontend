@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from "socket.io-client";
 import './App.css';
+import Editor from './editor'
 import { SERVER_URL } from './config/config'
 
 class App extends Component {
@@ -21,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <textarea value={this.state.value} onChange={this.handleChange}></textarea>
+        <Editor />
       </div>
     );
   }
