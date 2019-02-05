@@ -11,17 +11,17 @@ app.get('/getSessionURL', (req, res) => {
 	const url = Math.random().toString(36).substring(2);
 	console.log(url)
 	socketsArray.push(url)
-
+	var newSocket = io.of(url)
+	newSocket.on('connection', (socket) => {
+		console.log('Someone connected with socket id', socket.id)
+		socket.on('SEND_MESSAGE', (data) => {
+			socket.broadcast.emit('RECEIVE_MESSAGE', data)
+		})
+	})
 	res.send({ url })
 })
 
 server = app.listen(PORT, () => {
 	console.log('Server started on port:', PORT)
 	io = socket(server)
-	io.on('connection', (socket) => {
-		console.log('Someone Connected with socket id', socket.id)
-		socket.on('SEND_MESSAGE', (data) => {
-			console.log(data)
-		})
-	})
 })
