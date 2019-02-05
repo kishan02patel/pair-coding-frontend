@@ -1,5 +1,4 @@
 import React from 'react'
-import './index.css'
 import AceEditor from 'react-ace';
 
 import 'brace/mode/javascript';
@@ -90,6 +89,8 @@ class Editor extends React.Component {
 					name="editor1"
 					mode={this.state.mode}
 					theme={this.state.theme}
+					height='400px'
+					width='600px'
 					value={this.state.mode === 'javascript' ? this.state.value : ''}
 					fontSize={14}
 					showGutter={true}

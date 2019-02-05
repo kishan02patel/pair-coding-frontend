@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
-import Editor from './editor'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import SessionPage from './session-page';
+import EditorPage from './editor-page'
 
 class App extends Component {
   render() {
@@ -11,8 +11,8 @@ class App extends Component {
           <h3>Live Coding Platform</h3>
 
           <Switch>
-            <Route path='/' component={SessionPage} />
-            <Route path='/editor' component={Editor} />
+            <Route path='/' component={SessionPage} exact />
+            <Route path='/editor-page' component={EditorPage} exact />
           </Switch>
 
         </div>
