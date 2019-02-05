@@ -11,5 +11,8 @@ server = app.listen(PORT, () => {
 	io = socket(server)
 	io.on('connection', (socket) => {
 		console.log('Someone Connected with socket id', socket.id)
+		socket.on('SEND_MESSAGE', (data) => {
+			console.log(data)
+		})
 	})
 })
