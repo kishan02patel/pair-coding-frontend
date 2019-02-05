@@ -11,7 +11,7 @@ const SessionPage = (props) => {
 		else {
 			console.log(url)
 			props.history.push({
-				pathname: '/editor',
+				pathname: '/editor-page',
 				state: { url }
 			})
 		}
@@ -22,9 +22,8 @@ const SessionPage = (props) => {
 			.then(response => response.json())
 			.then(response => {
 				var url = response.url
-				console.log('Url received ', url)
 				props.history.push({
-					pathname: '/editor',
+					pathname: '/editor-page',
 					state: { url }
 				})
 			})

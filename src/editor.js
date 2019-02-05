@@ -9,11 +9,7 @@ const languages = [
 	'javascript',
 	'java',
 	'python',
-	'ruby',
-	'mysql',
-	'golang',
-	'csharp',
-	'typescript',
+	'ruby'
 ];
 
 const themes = [
@@ -42,7 +38,7 @@ class Editor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: `function onLoad(editor) {\n\tconsole.log("Start typing...");\n}`,
+			value: `function execute() {\n\t//Type your code here...\n\n}`,
 			theme: 'monokai',
 			mode: 'javascript',
 		}
@@ -52,7 +48,8 @@ class Editor extends React.Component {
 	}
 
 	onChange(newValue) {
-		console.log(newValue);
+		this.setState({ value: newValue })
+		this.props.handleChange(newValue)
 	}
 
 	setTheme(e) {
@@ -101,7 +98,6 @@ class Editor extends React.Component {
 					readOnly={false} // to make read only instance. it will be helpful when we just want listeners to juse see the code.
 					onLoad={this.onLoad}
 					onChange={this.onChange}
-					onPaste={this.onPaste}
 
 					setOptions={{
 						enableBasicAutocompletion: true,

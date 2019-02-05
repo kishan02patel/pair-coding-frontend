@@ -6,23 +6,22 @@ import { SERVER_URL } from './config/config'
 class EditorPage extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			value: ''
-		}
 		this.handleChange = this.handleChange.bind(this)
-		this.socket = io(SERVER_URL)
 		console.log(props.location.state.url)
+		this.socket = io(`${SERVER_URL}/${props.location.state.url}`)
 	}
 
-	handleChange(event) {
-		this.setState({ value: event.target.value })
-		this.socket.emit('SEND_MESSAGE', event.target.value)
+	handleChange(data) {
+		this.socket.emit('SEND_MESSAGE', data)
 	}
 
 	render() {
 		return (
 			<div>
-				<Editor />
+				<p><b>You are connected to {SERVER_URL}/{this.props.location.state.url}</b>
+					<br />
+					Share this URL with your peers to work together.</p>
+				<Editor handleChange={this.handleChange} />
 			</div>
 		);
 	}
