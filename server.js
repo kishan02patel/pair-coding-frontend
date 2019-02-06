@@ -24,6 +24,13 @@ app.get('/getSessionURL', (req, res) => {
 	res.send({ url })
 })
 
+app.get('/checkSocketExists', (req, res) => {
+	if (socketsArray.includes(req.query.url))
+		res.send({ isSocketPresent: true })
+	else
+		res.send({ isSocketPresent: false })
+})
+
 server = app.listen(PORT, () => {
 	console.log('Server started on port:', PORT)
 	io = socket(server)
