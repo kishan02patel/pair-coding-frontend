@@ -38,7 +38,7 @@ class Editor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: `function execute() {\n\t//Type your code here...\n\n}`,
+			value: '',
 			theme: 'monokai',
 			mode: 'javascript',
 		}
@@ -91,7 +91,7 @@ class Editor extends React.Component {
 					theme={this.state.theme}
 					height='400px'
 					width='600px'
-					value={this.state.mode === 'javascript' ? this.state.value : ''}
+					value={this.state.value}
 					fontSize={14}
 					showGutter={true}
 					wrapEnabled={true}
