@@ -17,6 +17,9 @@ app.get('/getSessionURL', (req, res) => {
 		socket.on('SEND_MESSAGE', (data) => {
 			socket.broadcast.emit('RECEIVE_MESSAGE', data)
 		})
+		socket.on('CHANGED_LANGUAGE', (data) => {
+			socket.broadcast.emit('RECEIVE_NEW_LANGUAGE', data)
+		})
 	})
 	res.send({ url })
 })
