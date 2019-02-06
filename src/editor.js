@@ -48,6 +48,11 @@ class Editor extends React.Component {
 		this.props.socket.on('RECEIVE_MESSAGE', (data) => {
 			this.setState({ value: data })
 		})
+		this.props.socket.on('RECEIVE_NEW_LANGUAGE', (data) => {
+			console.log(data)
+			if (data)
+				this.setState({ mode: data })
+		})
 	}
 
 	onChange(newValue) {
@@ -64,6 +69,7 @@ class Editor extends React.Component {
 		this.setState({
 			mode: e.target.value,
 		});
+		this.props.socket.emit('CHANGED_LANGUAGE', e.target.value)
 	}
 
 	render() {

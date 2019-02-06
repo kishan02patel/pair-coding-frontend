@@ -6,13 +6,13 @@ const SessionPage = (props) => {
 	function handleSubmit(event) {
 		/*
 		**	Make sure if the socket does not exist then ask the user whether he/she wants to create a new socket.
+	   	**  Develop a functionality that allows user to select whether 2 people should be able to type 				simultaneouly or when one is typing the other one should not be able to type. If 2 people are typing 	simultaneously then whose code will be kept. Also figure out that if 2 people are typing 2 different 	things then both of them should be kept(check the line numbers or some other logic.) 
 		*/
 		event.preventDefault()
 		const url = event.target[0].value
 		if (url.length === 0)
 			alert('This cannot be empty. Either create new session or paste the URL here.')
 		else {
-			console.log(url)
 			props.history.push({
 				pathname: '/editor-page',
 				state: { url }
