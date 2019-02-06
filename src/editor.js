@@ -45,6 +45,9 @@ class Editor extends React.Component {
 		this.setTheme = this.setTheme.bind(this);
 		this.setMode = this.setMode.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.props.socket.on('RECEIVE_MESSAGE', (data) => {
+			this.setState({ value: data })
+		})
 	}
 
 	onChange(newValue) {

@@ -4,6 +4,9 @@ import { SERVER_URL } from './config/config'
 const SessionPage = (props) => {
 
 	function handleSubmit(event) {
+		/*
+		**	Make sure if the socket does not exist then ask the user whether he/she wants to create a new socket.
+		*/
 		event.preventDefault()
 		const url = event.target[0].value
 		if (url.length === 0)
@@ -36,7 +39,7 @@ const SessionPage = (props) => {
 			<br /><br />
 			<h3>OR</h3>
 			<br />
-			<form onSubmit={(handleSubmit)}>
+			<form onSubmit={handleSubmit}>
 				<input type="text" placeholder="Type the URL to connect..." />
 				<input type="submit" value="Connect" />
 			</form>

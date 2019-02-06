@@ -9,9 +9,6 @@ class EditorPage extends Component {
 		this.handleChange = this.handleChange.bind(this)
 		console.log(props.location.state.url)
 		this.socket = io(`${SERVER_URL}/${props.location.state.url}`)
-		this.socket.on('RECEIVE_MESSAGE', (data) => {
-			console.log(data)
-		})
 	}
 
 	handleChange(data) {
@@ -21,11 +18,16 @@ class EditorPage extends Component {
 	render() {
 		return (
 			<div>
-				<p><b>You are connected to {SERVER_URL}/{this.props.location.state.url}</b>
-					<br />
-					Share this URL with your peers to work together.</p>
-				<Editor handleChange={this.handleChange} />
-			</div>
+				<p>
+					Share <span onClick={
+						function (event) {
+							navigator.clipboard.writeText(event.target.innerHTML);
+							document.execCommand("copy")
+						}
+					} title="Click to copy"><u><b>{this.props.location.state.url}</b></u></span> with your peers to work together.
+				</p>
+				<Editor handleChange={this.handleChange} socket={this.socket} />
+			</div >
 		);
 	}
 }
