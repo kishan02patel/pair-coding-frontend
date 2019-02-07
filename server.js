@@ -43,6 +43,11 @@ app.get('/getSessionURL', (req, res) => {
 			// Count number of clients connected to a particular socket namespace.
 			newSocket.clients((error, clients) => {
 				console.log(`Clients in ${namespaceName} are`, clients.length)
+
+				// If the there is only one user connected then delete the socket namespace because that user has sent the leave session message and after this message he/she will close the connection.
+				if (clients.length <= 1) {
+					deleteSocketNamespace(newSocket)
+				}
 			})
 		})
 	})
@@ -60,3 +65,19 @@ server = app.listen(PORT, () => {
 	console.log('Server started on port:', PORT)
 	io = socket(server)
 })
+
+function deleteSocketNamespace(socket) {
+	// Get Object with Connected SocketIds(clients who are connected) as properties
+	const connectedNameSpaceSockets = Object.keys(socket.connected);
+
+	// It will run just once as there is only one user connected. Manually disconnecting the client. 
+	connectedNameSpaceSockets.forEach(socketId => {
+		// Disconnect Each socket(client)
+		socket.connected[socketId].disconnect();
+	});
+
+	// Remove all Listeners for the event emitter
+	socket.removeAllListeners();
+	// Remove from the server namespaces
+	delete io.nsps[namespaceName];
+}
