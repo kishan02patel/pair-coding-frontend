@@ -4,11 +4,6 @@ import { SERVER_URL } from './config/config'
 const SessionPage = (props) => {
 
 	function handleSubmit(event) {
-		/*		
-		**  Develop a functionality that allows user to select whether 2 people should be able to type 				simultaneouly or when one is typing the other one should not be able to type. If 2 people are typing 	simultaneously then whose code will be kept. Also figure out that if 2 people are typing 2 different 	things then both of them should be kept(check the line numbers or some other logic.) 
-		    
-		**	When a new person is connected to a socket the data and language already transfered is not shown to 	him until and unless code is changed and language is changed. 
-		*/
 		event.preventDefault()
 		const url = event.target[0].value
 		if (url.length === 0)

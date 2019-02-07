@@ -15,6 +15,12 @@ class EditorPage extends Component {
 		this.socket.emit('SEND_MESSAGE', data)
 	}
 
+	componentWillUnmount() {
+		console.log('component unmounted')
+		this.socket.emit('LEAVE_SESSION')
+		this.socket.close()
+	}
+
 	render() {
 		return (
 			<div>
