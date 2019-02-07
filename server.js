@@ -3,7 +3,6 @@ const socket = require('socket.io')
 const cors = require('cors')
 const app = express()
 const { PORT } = require('./src/config/config')
-const socketsArray = []
 
 app.use(cors())
 
@@ -14,9 +13,6 @@ app.get('/getSessionURL', (req, res) => {
 	// Generate a random string which will be used for socket namespace. 
 	const url = Math.random().toString(36).substring(2);
 	console.log('New socket URL is', url)
-
-	// Keep track of all the socket namespaces taht are generated.
-	socketsArray.push(url)
 
 	// Create a new socket namespace
 	var newSocket = io.of(url)
@@ -52,16 +48,14 @@ app.get('/getSessionURL', (req, res) => {
 	res.send({ url })
 })
 
+// Check whether the socket namespace user wants to connect exists or not. 
 app.get('/checkSocketExists', (req, res) => {
-	if (socketsArray.includes(req.query.url))
+	// Get all the socket namespaces that are currently active.
+	const socketsArray = Object.keys(io.nsps)
+	if (socketsArray.includes('/' + req.query.url))
 		res.send({ isSocketPresent: true })
 	else
 		res.send({ isSocketPresent: false })
-})
-
-server = app.listen(PORT, () => {
-	console.log('Server started on port:', PORT)
-	io = socket(server)
 })
 
 function deleteSocketNamespace(socket) {
@@ -80,3 +74,8 @@ function deleteSocketNamespace(socket) {
 	// Remove from the server namespaces
 	delete io.nsps[socket.name];
 }
+
+server = app.listen(PORT, () => {
+	console.log('Server started on port:', PORT)
+	io = socket(server)
+})
