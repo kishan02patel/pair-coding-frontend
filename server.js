@@ -38,11 +38,9 @@ app.get('/getSessionURL', (req, res) => {
 		// Event listener to listen to request when the user is going to leave the session.
 		socket.on('LEAVE_SESSION', () => {
 			const namespaceName = socket.nsp.name
-			console.log(namespaceName)
 
 			// Count number of clients connected to a particular socket namespace.
 			newSocket.clients((error, clients) => {
-				console.log(`Clients in ${namespaceName} are`, clients.length)
 
 				// If the there is only one user connected then delete the socket namespace because that user has sent the leave session message and after this message he/she will close the connection.
 				if (clients.length <= 1) {
@@ -67,6 +65,7 @@ server = app.listen(PORT, () => {
 })
 
 function deleteSocketNamespace(socket) {
+	console.log(`Deleting ${socket.name} socket namespace`)
 	// Get Object with Connected SocketIds(clients who are connected) as properties
 	const connectedNameSpaceSockets = Object.keys(socket.connected);
 
@@ -79,5 +78,5 @@ function deleteSocketNamespace(socket) {
 	// Remove all Listeners for the event emitter
 	socket.removeAllListeners();
 	// Remove from the server namespaces
-	delete io.nsps[namespaceName];
+	delete io.nsps[socket.name];
 }
