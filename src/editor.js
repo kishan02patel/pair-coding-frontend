@@ -25,6 +25,13 @@ const themes = [
 	'terminal',
 ];
 
+const extensions = {
+	python: 'py',
+	java: 'java',
+	javascript: 'js',
+	ruby: 'rb'
+}
+
 languages.forEach(lang => {
 	require(`brace/mode/${lang}`);
 	require(`brace/snippets/${lang}`);
@@ -45,6 +52,7 @@ class Editor extends React.Component {
 		this.setTheme = this.setTheme.bind(this);
 		this.setMode = this.setMode.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.saveFile = this.saveFile.bind(this);
 		this.props.socket.on('RECEIVE_MESSAGE', (data) => {
 			this.setState({ value: data })
 		})
@@ -72,6 +80,14 @@ class Editor extends React.Component {
 		this.props.socket.emit('CHANGED_LANGUAGE', e.target.value)
 	}
 
+	saveFile() {
+		var newElement = document.createElement('a')
+		var newFile = new Blob([this.state.value], { type: 'text/plain' })
+		newElement.href = URL.createObjectURL(newFile)
+		newElement.download = `code.${extensions[this.state.mode]}`
+		newElement.click()
+	}
+
 	render() {
 		return (
 			<div className="editorClass" >
@@ -84,12 +100,14 @@ class Editor extends React.Component {
 				</select>
 				<br />
 				<select name="Theme" onChange={this.setTheme} value={this.state.theme}>
-					{themes.map(lang => (
-						<option key={lang} value={lang}>
-							{lang}
+					{themes.map(theme => (
+						<option key={theme} value={theme}>
+							{theme}
 						</option>
 					))}
 				</select>
+				<br />
+				<button onClick={this.saveFile}>Download Code</button>
 				<br />
 				<AceEditor
 					name="editor1"
