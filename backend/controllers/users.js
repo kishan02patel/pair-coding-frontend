@@ -3,8 +3,16 @@ const router = express.Router()
 const { User } = require('../models/user')
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET_KEY } = require('../config/config')
+const validateLoginInput = require('../helpers/validations/login')
+const validateRegisterInput = require('../helpers/validations/register')
 
 router.post('/register', (req, res) => {
+
+	const { errors, isValid } = validateRegisterInput(req.body)
+
+	if (!isValid)
+		return res.status(400).send(errors)
+
 	const newUser = new User(req.body)
 	newUser.save()
 		.then(() => {
@@ -14,6 +22,12 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
+
+	const { errors, isValid } = validateLoginInput(req.body)
+
+	// Check validation passed or not
+	if (!isValid)
+		return res.status(400).send(errors)
 
 	const email = req.body.email
 	const password = req.body.password
