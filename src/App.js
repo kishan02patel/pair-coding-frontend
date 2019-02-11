@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <h3>Live Coding Platform</h3>
+          <h3>Pair Coding Platform</h3>
 
           <Switch>
             <Route path='/' component={SessionPage} exact />

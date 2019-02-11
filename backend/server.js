@@ -2,7 +2,7 @@ const express = require('express')
 const socket = require('socket.io')
 const cors = require('cors')
 const app = express()
-const { PORT } = require('./src/config/config')
+const { PORT } = require('./config/config')
 
 app.use(cors())
 
