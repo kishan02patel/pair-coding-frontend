@@ -44,6 +44,41 @@ userSchema.pre('save', function (next) {
 		next()
 })
 
+userSchema.statics.matchUserCredentials = function (email, password) {
+	// Get the reference of the userschema. It is not necessary. Instead of using 'this' we will use User 
+	const User = this
+	return User.findOne({ email })
+		.then(user => {
+			// If user exists
+			if (user) {
+				// Check password
+				return bcrypt.compare(password, user.password)
+					.then(isMatched => {
+						// If password is correct resolve the Promise
+						if (isMatched) {
+							return Promise.resolve(user)
+						}
+						// If password is incorrect reject Promise
+						else {
+							return Promise.reject('Invalid email or password.')
+						}
+					})
+					// If some error occurs while comparing password
+					.catch(err => {
+						return Promise.reject(err)
+					})
+			}
+			// If email is not found then reject the Promise
+			else {
+				return Promise.reject('Invalid email or password.')
+			}
+		})
+		// If some error occurs while finding the email.
+		.catch(err => {
+			return Promise.reject(err)
+		})
+}
+
 const User = mongoose.model('users', userSchema)
 
 module.exports = {
