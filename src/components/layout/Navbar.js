@@ -18,9 +18,9 @@ class Navbar extends React.Component {
 		const authLinks = (
 			<ul className="navbar-nav ml-auto">
 				<li className="nav-item">
-					<a className="nav-link">
+					<span className="nav-link">
 						Hello {user.name}
-					</a>
+					</span>
 				</li>
 				<li className="nav-item">
 					<a href="#fakeLink" onClick={this.onLogoutClick.bind(this)} className="nav-link">

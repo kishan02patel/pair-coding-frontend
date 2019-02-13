@@ -1,6 +1,5 @@
 import React from 'react'
 import { SERVER_URL } from './config/config'
-import TextFieldGroup from './components/common/TextFieldGroup';
 
 class SessionPage extends React.Component {
 	constructor(props) {
@@ -67,8 +66,9 @@ class SessionPage extends React.Component {
 				<h5>OR</h5>
 				<br />
 				<form onSubmit={this.handleSubmit}>
-					<TextFieldGroup placeholder="Type the URL to connect..."
-					/>
+					<div className="form-group">
+						<input type="text" className="form-control form-control-lg" placeholder="Type the URL to connect..." />
+					</div>
 					<input className="btn btn-info" type="submit" value="Connect" />
 				</form>
 			</div >
