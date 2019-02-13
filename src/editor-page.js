@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import Editor from './editor'
 import { SERVER_URL } from './config/config'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class EditorPage extends Component {
 	constructor(props) {
@@ -12,9 +13,20 @@ class EditorPage extends Component {
 		this.socket = null
 	}
 
+	// Connect to a socket namespace and pass in the user details.
+	connectSocket() {
+		const { user } = this.props.auth
+		this.socket = io(`${SERVER_URL}/${this.props.location.state.url}`, {
+			query: {
+				userId: user.id,
+				name: user.name
+			}
+		})
+	}
+
 	componentWillMount() {
 		// Check whether this page is opened via the previous session page and the state(and url) is passed or not. If it is passed then create socket to listen on the passed URL.
-		this.props.location.state ? this.socket = io(`${SERVER_URL}/${this.props.location.state.url}`) : console.log('Session not estiblished')
+		this.props.location.state ? this.connectSocket() : console.log('Session not estiblished')
 	}
 
 	handleChange(data) {
@@ -50,4 +62,10 @@ class EditorPage extends Component {
 	}
 }
 
-export default EditorPage;
+const mapStateToProps = state => {
+	return {
+		auth: state.auth
+	}
+}
+
+export default connect(mapStateToProps)(EditorPage);
