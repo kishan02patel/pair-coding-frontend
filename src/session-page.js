@@ -1,5 +1,6 @@
 import React from 'react'
 import { SERVER_URL } from './config/config'
+import TextFieldGroup from './components/common/TextFieldGroup';
 
 class SessionPage extends React.Component {
 	constructor(props) {
@@ -57,13 +58,18 @@ class SessionPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<button onClick={this.createSession}>Create New Session</button>
+				<h3 className="text-center">Start Coding</h3>
+				<p className="text-muted mb-40">
+					Choose one of the options below to start live pair coding.
+				</p>
+				<button className="btn btn-info" onClick={this.createSession}>Create New Session</button>
 				<br /> <br />
-				<h3>OR</h3>
+				<h5>OR</h5>
 				<br />
 				<form onSubmit={this.handleSubmit}>
-					<input type="text" placeholder="Type the URL to connect..." />
-					<input type="submit" value="Connect" />
+					<TextFieldGroup placeholder="Type the URL to connect..."
+					/>
+					<input className="btn btn-info" type="submit" value="Connect" />
 				</form>
 			</div >
 		)
