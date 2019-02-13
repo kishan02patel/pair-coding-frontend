@@ -4,10 +4,18 @@ const cors = require('cors')
 const app = express()
 const { PORT } = require('./config/config')
 const { userRouter } = require('./controllers/users')
+const passport = require('passport')
+
+// Connect to Database
 require('./config/db-config')
 
 app.use(cors())
 app.use(express.json())
+
+//Passport middleware
+app.use(passport.initialize())
+//Passport config
+require('./helpers/authentication/passport')(passport)
 
 // User routes
 app.use('/users', userRouter)
