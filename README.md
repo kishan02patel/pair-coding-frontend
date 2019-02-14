@@ -1,3 +1,18 @@
+# Pair Coding
+
+## Description 
+A live coding platform which gives users the ability to code together.
+- A user can create a session and make it available to other users by giving them socket namespace.
+- Other users can connect to that socket namespace and start working together.
+- All the code and users' details connected to that session will be saved in the database. 
+- This is mostly helpful for interviewers to conduct technical interviews and know the thought process of the interviewee 
+
+### Features:
+- Multiple language support
+- Multiple editor-themes 
+- Download the code
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
