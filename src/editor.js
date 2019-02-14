@@ -88,54 +88,73 @@ class Editor extends React.Component {
 		newElement.click()
 	}
 
+
+
 	render() {
 		return (
-			<div className="editorClass" >
-				<select name="mode" onChange={this.setMode} value={this.state.mode}>
-					{languages.map(lang => (
-						<option key={lang} value={lang}>
-							{lang}
-						</option>
-					))}
-				</select>
-				<br />
-				<select name="Theme" onChange={this.setTheme} value={this.state.theme}>
-					{themes.map(theme => (
-						<option key={theme} value={theme}>
-							{theme}
-						</option>
-					))}
-				</select>
-				<br />
-				<button onClick={this.saveFile}>Download Code</button>
-				<br />
-				<AceEditor
-					name="editor1"
-					mode={this.state.mode}
-					theme={this.state.theme}
-					height='400px'
-					width='600px'
-					value={this.state.value}
-					fontSize={14}
-					showGutter={true}
-					wrapEnabled={true}
-					highlightActiveLine={true}
-					showPrintMargin={true}
-					focus={true} // to focus on editor automatically when page loads
-					readOnly={false} // to make read only instance. it will be helpful when we just want listeners to juse see the code.
-					onLoad={this.onLoad}
-					onChange={this.onChange}
+			<div>
+				<form className="form-inline">
+					<div className="input-group mb-3 col-4">
+						<div className="input-group-prepend">
+							<label className="input-group-text" htmlFor="inputGroupSelect01">Language</label>
+						</div>
+						<select name="mode" onChange={this.setMode} value={this.state.mode} className="custom-select" id="inputGroupSelect01">
+							{languages.map(lang => (
+								<option key={lang} value={lang}>
+									{lang}
+								</option>
+							))}
+						</select>
+					</div>
 
-					setOptions={{
-						enableBasicAutocompletion: true,
-						enableLiveAutocompletion: true,
-						enableSnippets: false,
-						showLineNumbers: true,
-						tabSize: 4,
-					}}
-					editorProps={{ $blockScrolling: Infinity }}
-				/>
-			</div >
+					<div className="input-group mb-3 col-4">
+						<div className="input-group-prepend">
+							<label className="input-group-text" htmlFor="inputGroupSelect02">Theme</label>
+						</div>
+						<select name="Theme" onChange={this.setTheme} value={this.state.theme} className="custom-select" id="inputGroupSelect02">
+							{themes.map(theme => (
+								<option key={theme} value={theme}>
+									{theme}
+								</option>
+							))}
+						</select>
+					</div>
+					<div className="input-group mb-3 col-3">
+						<div>
+							<button type="button" className="btn btn-info" onClick={this.saveFile}>Download Code</button>
+						</div>
+					</div>
+
+					<div className="editor">
+						<AceEditor
+							name="editor"
+							mode={this.state.mode}
+							theme={this.state.theme}
+							height="inherit"
+							width="inherit"
+							value={this.state.value}
+							fontSize={14}
+							showGutter={true}
+							wrapEnabled={true}
+							highlightActiveLine={true}
+							showPrintMargin={true}
+							focus={true} // to focus on editor automatically when page loads
+							readOnly={false} // to make read only instance. it will be helpful when we just want listeners to juse see the code.
+							onLoad={this.onLoad}
+							onChange={this.onChange}
+
+							setOptions={{
+								enableBasicAutocompletion: true,
+								enableLiveAutocompletion: true,
+								enableSnippets: false,
+								showLineNumbers: true,
+								tabSize: 4
+							}}
+							editorProps={{ $blockScrolling: Infinity }}
+						/>
+					</div>
+				</form>
+			</div>
 		)
 	}
 

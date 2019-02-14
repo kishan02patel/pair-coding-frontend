@@ -37,3 +37,9 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.editor {
+  position: relative;
+  width: 800px;
+  height: 400px;
+}
