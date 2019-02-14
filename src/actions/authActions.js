@@ -6,7 +6,10 @@ import jwt_decode from 'jwt-decode'
 export const registerUser = (userData, history) => dispatch => {
 	axios.post('/users/register', userData)
 		// If success then redirect user to login page
-		.then(response => history.push('/login'))
+		.then(response => {
+			window.alert('User Registered Successfully. Please login to continue')
+			history.push('/login')
+		})
 		// If server validation fails then show errors to the user. 
 		.catch(err =>
 			dispatch({
