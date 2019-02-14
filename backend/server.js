@@ -10,6 +10,9 @@ const CodeSession = require('./models/codeSession')
 // Keep all the active socket namespace and their database object id in an object.
 const activeSockets = {}
 
+// After how many keystrokes the data should be saved to database.
+const keystrokes = 5
+
 // Connect to Database
 require('./config/db-config')
 
@@ -44,12 +47,29 @@ app.get('/getSessionURL', (req, res) => {
 		socket.on('SEND_MESSAGE', (data) => {
 			// Send the data to other clients except the sender
 			socket.broadcast.emit('RECEIVE_MESSAGE', data)
+
+			// Increase the char count after every request.
+			activeSockets[socket.nsp.name].charCount++
+
+			// If the number of changed characters for that particular socket namespace is 5 then save it to database.
+			if (activeSockets[socket.nsp.name].charCount % keystrokes === 0) {
+				const newData = {
+					language: activeSockets[socket.nsp.name].language,
+					code: data
+				}
+				CodeSession.findByIdAndUpdate(activeSockets[socket.nsp.name].DB_ID, { $push: { data: newData } }, { new: true })
+					.then(() => { })
+					.catch(err => console.log("Error in saving", err))
+			}
 		})
 
 		// Event listener to listen to client if they changed the language settings.
 		socket.on('CHANGED_LANGUAGE', (data) => {
 			// Send this change to other clients except the sender.
 			socket.broadcast.emit('RECEIVE_NEW_LANGUAGE', data)
+
+			// Change the language set for that socket namespace which will be used while saving data to database. 
+			activeSockets[socket.nsp.name].language = data
 		})
 
 		// Event listener to listen to request when the user is going to leave the session.
@@ -123,14 +143,18 @@ function createDatabaseEntry(socket) {
 		newCodeSession.save()
 			.then((response) => {
 				// Add the socket namespace and set its value to the database object id so that later it can be modified.
-				activeSockets[socket.nsp.name] = response._id
+				activeSockets[socket.nsp.name] = {
+					DB_ID: response._id,
+					charCount: 0,
+					language: 'javascript'
+				}
 				console.log(activeSockets)
 			})
 			.catch(err => console.log(err))
 	}
 	// If the database entry is already created and a new user joins in.
 	else {
-		CodeSession.findOneAndUpdate({ _id: activeSockets[socket.nsp.name] }, {
+		CodeSession.findOneAndUpdate({ _id: activeSockets[socket.nsp.name]['DB_ID'] }, {
 			// Add the new user to the session object in database.
 			$push: {
 				users: {
@@ -141,7 +165,9 @@ function createDatabaseEntry(socket) {
 		}, { new: true })
 			.then(session => {
 				if (session) {
-					console.log(session)
+					// Once the user joins the session send that user the recent code data and language to keep that user updated.
+					socket.emit('RECEIVE_MESSAGE', session.data[session.data.length - 1].code)
+					socket.emit('RECEIVE_NEW_LANGUAGE', session.data[session.data.length - 1].language)
 				}
 				else {
 					console.log('No such code session exists')
