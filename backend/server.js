@@ -51,6 +51,9 @@ app.get('/getSessionURL', (req, res) => {
 			// Increase the char count after every request.
 			activeSockets[socket.nsp.name].charCount++
 
+			// Update the code stored in the activeSockets object.
+			activeSockets[socket.nsp.name].code = data
+
 			// If the number of changed characters for that particular socket namespace is 5 then save it to database.
 			if (activeSockets[socket.nsp.name].charCount % keystrokes === 0) {
 				const newData = {
@@ -146,9 +149,10 @@ function createDatabaseEntry(socket) {
 				activeSockets[socket.nsp.name] = {
 					DB_ID: response._id,
 					charCount: 0,
-					language: 'javascript'
+					language: 'javascript',
+					code: ''
 				}
-				console.log(activeSockets)
+				// console.log(activeSockets)
 			})
 			.catch(err => console.log(err))
 	}
@@ -166,8 +170,8 @@ function createDatabaseEntry(socket) {
 			.then(session => {
 				if (session) {
 					// Once the user joins the session send that user the recent code data and language to keep that user updated.
-					socket.emit('RECEIVE_MESSAGE', session.data[session.data.length - 1].code)
-					socket.emit('RECEIVE_NEW_LANGUAGE', session.data[session.data.length - 1].language)
+					socket.emit('RECEIVE_MESSAGE', activeSockets[socket.nsp.name].code)
+					socket.emit('RECEIVE_NEW_LANGUAGE', activeSockets[socket.nsp.name].language)
 				}
 				else {
 					console.log('No such code session exists')
