@@ -15,9 +15,17 @@ const CodeSessionSchema = new Schema({
 			}
 		}
 	],
-	data: {
-		type: [String]
-	},
+	data: [
+		{
+			language: {
+				type: String,
+				default: 'javascript'
+			},
+			code: {
+				type: String
+			}
+		}
+	],
 	sessionId: {
 		type: String,
 		required: true
