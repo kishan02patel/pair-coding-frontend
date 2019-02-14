@@ -30,7 +30,7 @@ app.use('/users', userRouter)
 /*
 	This function will genearte a random string and send that string to the client. The function will create a new socket namespace with the randomly generated string as its name.
 */
-app.get('/getSessionURL', (req, res) => {
+app.get('/getSessionURL', passport.authenticate('jwt', { session: false }), (req, res) => {
 	// Generate a random string which will be used for socket namespace. 
 	const url = Math.random().toString(36).substring(2);
 	console.log('New socket URL is', url)
@@ -92,7 +92,7 @@ app.get('/getSessionURL', (req, res) => {
 })
 
 // Check whether the socket namespace user wants to connect exists or not. 
-app.get('/checkSocketExists', (req, res) => {
+app.get('/checkSocketExists', passport.authenticate('jwt', { session: false }), (req, res) => {
 	// Get all the socket namespaces that are currently active.
 	const socketsArray = Object.keys(io.nsps)
 	if (socketsArray.includes('/' + req.query.url))
