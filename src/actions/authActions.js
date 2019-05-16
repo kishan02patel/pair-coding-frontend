@@ -1,10 +1,11 @@
 import axios from 'axios'
 import setAuthToken from '../helpers/setAuthToken'
+import { SERVER_URL } from '../config/config'
 import jwt_decode from 'jwt-decode'
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
-	axios.post('/users/register', userData)
+	axios.post(`${SERVER_URL}/users/register`, userData)
 		// If success then redirect user to login page
 		.then(response => {
 			window.alert('User Registered Successfully. Please login to continue')
@@ -20,7 +21,7 @@ export const registerUser = (userData, history) => dispatch => {
 
 // Login and get user token
 export const loginUser = userData => dispatch => {
-	axios.post('/users/login', userData)
+	axios.post(`${SERVER_URL}/users/login`, userData)
 		.then(response => {
 			const { token } = response.data
 			// Save the token to localstorage
