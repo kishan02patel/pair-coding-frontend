@@ -1,0 +1,44 @@
+defaults: &defaults
+  docker: 
+    - image: circleci/node:11 
+
+version: 2.1
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore npm packages
+          keys:
+            - npm-packages-{{ checksum "package.json" }}
+      - run: 
+          name: Install packages
+          command: npm install
+      - run:
+          name: Build with react scripts
+          command: npm run build
+      - save_cache:
+          name: Save npm packages
+          key: npm-packages-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy to heroku
+          command: git push https://heroku:$REACT_APP_HEROKU_API_KEY@git.heroku.com/$REACT_APP_NAME.git master --force
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
