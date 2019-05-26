@@ -6,6 +6,7 @@ A live coding platform which gives users the ability to code together.
   - Other users can connect to that socket namespace and start working together.
   - All the code and users' details connected to that session will be saved in the database. 
   - This is mostly helpful for interviewers to conduct technical interviews and know the thought process of the interviewee. 
+  - Link for this app: https://paircoding.herokuapp.com
 
 ### Features:
   - Multiple language support.
