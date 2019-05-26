@@ -22,7 +22,7 @@ jobs:
           name: Save npm packages
           key: npm-packages-{{ checksum "package.json" }}
           paths:
-            - node_modules
+            - ~/usr/local/lib/node_modules
   deploy:
     <<: *defaults
     steps:
