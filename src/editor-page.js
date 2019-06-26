@@ -49,7 +49,7 @@ class EditorPage extends Component {
 				<div>
 					<p>
 						{/* Create a span tag that will show the socket namespace which can be shared with others to connect to same socket namespace and work together. The onclick function is set up to copy this reference when user clicks on this.  */}
-						Share <span onClick={
+						Share <span className="shareLink" onClick={
 							function (event) {
 								navigator.clipboard.writeText(event.target.innerHTML);
 								document.execCommand("copy")
