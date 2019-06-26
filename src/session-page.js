@@ -1,5 +1,6 @@
 import React from 'react'
 import { SERVER_URL } from './config/config'
+import axios from 'axios';
 
 class SessionPage extends React.Component {
 	constructor(props) {
@@ -23,10 +24,9 @@ class SessionPage extends React.Component {
 			alert('This cannot be empty. Either create new session or paste the URL here.')
 		else {
 			// Check whether the socket namespace exists or not. 
-			fetch(`${SERVER_URL}/checkSocketExists?url=${url}`)
-				.then(response => response.json())
+			axios.get(`${SERVER_URL}/checkSocketExists?url=${url}`)
 				.then(response => {
-					if (response.isSocketPresent) {
+					if (response.data.isSocketPresent) {
 						this.props.history.push({
 							pathname: '/editor-page',
 							state: { url }
@@ -42,16 +42,15 @@ class SessionPage extends React.Component {
 	}
 
 	createSession() {
-		fetch(`${SERVER_URL}/getSessionURL`)
-			.then(response => response.json())
+		axios.get(`${SERVER_URL}/getSessionURL`)
 			.then(response => {
-				var url = response.url
+				var url = response.data.url
 				this.props.history.push({
 					pathname: '/editor-page',
 					state: { url }
 				})
 			})
-			.catch(err => console.log(err))
+			.catch(err => console.log(JSON.stringify(err)))
 	}
 
 	render() {
